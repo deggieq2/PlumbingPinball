@@ -9,12 +9,13 @@ export const CONFIG = {
     length: 90,
     thickness: 14,
     speed: 14,
-    leftPivot: { x: 190, y: 800 },
-    rightPivot: { x: 410, y: 800 },
+    leftPivot: { x: 170, y: 800 },
+    rightPivot: { x: 430, y: 800 },
     leftDown: 0.35,
     leftUp: -0.45,
     rightDown: Math.PI - 0.35,
     rightUp: Math.PI + 0.45,
+    damping: 0.86,
   },
   guides: [
     { id: "g1", x1: 80, y1: 640, x2: 180, y2: 860, thickness: 12 },
@@ -222,10 +223,10 @@ const resolvePaddleCollision = (state, isLeft, active) => {
   const approach = ball.vx * normal.x + ball.vy * normal.y;
   if (approach >= 0) return false;
 
-  const boost = active ? 1.08 : 1.02;
+  const boost = active ? 1.03 : 1.0;
   const reflected = reflectVelocity(ball.vx, ball.vy, normal.x, normal.y, boost);
-  ball.vx = reflected.x;
-  ball.vy = reflected.y - (active ? 90 : 30);
+  ball.vx = reflected.x * CONFIG.paddle.damping;
+  ball.vy = (reflected.y - (active ? 70 : 20)) * CONFIG.paddle.damping;
 
   ball.x = closest.x + normal.x * (thickness + 0.5);
   ball.y = closest.y + normal.y * (thickness + 0.5);
