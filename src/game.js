@@ -30,6 +30,34 @@ const input = {
   launch: false,
 };
 
+const activeTouches = new Map();
+
+const updateTouchState = () => {
+  input.leftFlip = false;
+  input.rightFlip = false;
+  activeTouches.forEach((side) => {
+    if (side === "left") input.leftFlip = true;
+    if (side === "right") input.rightFlip = true;
+  });
+};
+
+const registerTouch = (event) => {
+  const rect = canvas.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const side = x < rect.width / 2 ? "left" : "right";
+  activeTouches.set(event.pointerId, side);
+  updateTouchState();
+
+  if (state.status === "waiting") {
+    input.launch = true;
+  }
+};
+
+const releaseTouch = (event) => {
+  activeTouches.delete(event.pointerId);
+  updateTouchState();
+};
+
 const KEY_MAP = {
   left: new Set(["ArrowLeft", "KeyA"]),
   right: new Set(["ArrowRight", "KeyD"]),
@@ -68,6 +96,15 @@ const handleKeyChange = (event, isDown) => {
 
 window.addEventListener("keydown", (event) => handleKeyChange(event, true));
 window.addEventListener("keyup", (event) => handleKeyChange(event, false));
+
+canvas.addEventListener("pointerdown", (event) => {
+  event.preventDefault();
+  canvas.setPointerCapture(event.pointerId);
+  registerTouch(event);
+});
+canvas.addEventListener("pointerup", releaseTouch);
+canvas.addEventListener("pointercancel", releaseTouch);
+canvas.addEventListener("pointerleave", releaseTouch);
 
 const drawBackground = () => {
   ctx.clearRect(0, 0, CONFIG.width, CONFIG.height);
