@@ -17,10 +17,11 @@ export const CONFIG = {
     rightUp: Math.PI + 0.45,
   },
   bumpers: [
-    { id: "b1", x: 130, y: 160, radius: 22, score: 140 },
-    { id: "b2", x: 250, y: 220, radius: 24, score: 120 },
-    { id: "b3", x: 350, y: 220, radius: 24, score: 120 },
-    { id: "b4", x: 300, y: 280, radius: 26, score: 160 },
+    { id: "b1", x: 170, y: 170, radius: 22, score: 140 },
+    { id: "b2", x: 300, y: 200, radius: 24, score: 120 },
+    { id: "b3", x: 410, y: 180, radius: 22, score: 120 },
+    { id: "b4", x: 260, y: 300, radius: 26, score: 160 },
+    { id: "b5", x: 380, y: 320, radius: 24, score: 140 },
   ],
   valves: [
     { id: "v1", x: 450, y: 420, radius: 12, score: 90 },
@@ -196,10 +197,10 @@ const resolvePaddleCollision = (state, isLeft, active) => {
   const approach = ball.vx * normal.x + ball.vy * normal.y;
   if (approach >= 0) return false;
 
-  const boost = active ? 1.22 : 1.06;
+  const boost = active ? 1.08 : 1.02;
   const reflected = reflectVelocity(ball.vx, ball.vy, normal.x, normal.y, boost);
   ball.vx = reflected.x;
-  ball.vy = reflected.y - (active ? 140 : 50);
+  ball.vy = reflected.y - (active ? 90 : 30);
 
   ball.x = closest.x + normal.x * (thickness + 0.5);
   ball.y = closest.y + normal.y * (thickness + 0.5);

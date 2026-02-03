@@ -27,6 +27,14 @@ body {
   padding: 24px;
 }
 
+.title {
+  margin: 0;
+  font-size: 22px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #f6f1d5;
+}
+
 .hud {
   width: 600px;
   display: flex;

@@ -67,6 +67,12 @@ const drawBackground = () => {
   ctx.fillStyle = "#1a2a33";
   ctx.fillRect(40, 0, 520, CONFIG.height);
 
+  const noiseGradient = ctx.createLinearGradient(0, 0, CONFIG.width, CONFIG.height);
+  noiseGradient.addColorStop(0, "rgba(23, 35, 44, 0.4)");
+  noiseGradient.addColorStop(1, "rgba(14, 21, 27, 0.4)");
+  ctx.fillStyle = noiseGradient;
+  ctx.fillRect(40, 0, 520, CONFIG.height);
+
   ctx.strokeStyle = "#2f404c";
   ctx.lineWidth = 6;
   ctx.strokeRect(30, 10, 540, CONFIG.height - 20);
@@ -87,6 +93,26 @@ const drawBackground = () => {
   ctx.lineTo(140, 600);
   ctx.moveTo(460, 120);
   ctx.lineTo(460, 600);
+  ctx.stroke();
+
+  ctx.fillStyle = "#202d35";
+  ctx.fillRect(70, 130, 40, 460);
+  ctx.fillRect(490, 130, 40, 460);
+
+  ctx.strokeStyle = "#3b4c57";
+  ctx.lineWidth = 6;
+  ctx.strokeRect(70, 130, 40, 460);
+  ctx.strokeRect(490, 130, 40, 460);
+
+  ctx.strokeStyle = "#3f5665";
+  ctx.lineWidth = 3;
+  ctx.beginPath();
+  for (let y = 160; y <= 560; y += 80) {
+    ctx.moveTo(70, y);
+    ctx.lineTo(110, y);
+    ctx.moveTo(490, y);
+    ctx.lineTo(530, y);
+  }
   ctx.stroke();
 
   ctx.fillStyle = "#1e2b33";
@@ -127,6 +153,13 @@ const drawBackground = () => {
   ctx.strokeStyle = "#526471";
   ctx.lineWidth = 3;
   ctx.strokeRect(420, 380, 90, 170);
+
+  ctx.fillStyle = "rgba(255, 255, 255, 0.04)";
+  for (let i = 0; i < 14; i += 1) {
+    ctx.beginPath();
+    ctx.arc(200 + i * 24, 720, 10, 0, Math.PI * 2);
+    ctx.fill();
+  }
 };
 
 const drawBumpers = () => {
