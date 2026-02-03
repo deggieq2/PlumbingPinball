@@ -16,6 +16,10 @@ export const CONFIG = {
     rightDown: Math.PI - 0.35,
     rightUp: Math.PI + 0.45,
   },
+  guides: [
+    { id: "g1", x1: 80, y1: 640, x2: 180, y2: 860, thickness: 12 },
+    { id: "g2", x1: 520, y1: 640, x2: 420, y2: 860, thickness: 12 },
+  ],
   bumpers: [
     { id: "b1", x: 170, y: 170, radius: 22, score: 140 },
     { id: "b2", x: 300, y: 200, radius: 24, score: 120 },
@@ -208,6 +212,42 @@ const resolvePaddleCollision = (state, isLeft, active) => {
   return true;
 };
 
+const resolveGuideCollisions = (state) => {
+  const { ball } = state;
+
+  CONFIG.guides.forEach((guide) => {
+    const segDx = guide.x2 - guide.x1;
+    const segDy = guide.y2 - guide.y1;
+    const segLenSq = segDx * segDx + segDy * segDy || 1;
+    const t = clamp(
+      ((ball.x - guide.x1) * segDx + (ball.y - guide.y1) * segDy) / segLenSq,
+      0,
+      1
+    );
+    const closest = {
+      x: guide.x1 + segDx * t,
+      y: guide.y1 + segDy * t,
+    };
+    const dx = ball.x - closest.x;
+    const dy = ball.y - closest.y;
+    const distance = Math.hypot(dx, dy);
+    const thickness = guide.thickness / 2 + CONFIG.ballRadius;
+
+    if (distance >= thickness || distance === 0) return;
+
+    const normal = normalize(dx, dy);
+    const approach = ball.vx * normal.x + ball.vy * normal.y;
+    if (approach >= 0) return;
+
+    const reflected = reflectVelocity(ball.vx, ball.vy, normal.x, normal.y, 1.02);
+    ball.vx = reflected.x;
+    ball.vy = reflected.y;
+
+    ball.x = closest.x + normal.x * (thickness + 0.5);
+    ball.y = closest.y + normal.y * (thickness + 0.5);
+  });
+};
+
 const updatePaddles = (state, input, dt) => {
   const speed = CONFIG.paddle.speed;
   const left = state.paddles.left;
@@ -309,6 +349,7 @@ export const stepState = (state, input, dt) => {
   handleValves(next);
   resolvePaddleCollision(next, true, input.leftFlip);
   resolvePaddleCollision(next, false, input.rightFlip);
+  resolveGuideCollisions(next);
   updateBonus(next, dt);
   handleDrain(next);
 
