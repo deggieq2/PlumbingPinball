@@ -3,8 +3,8 @@ export const CONFIG = {
   height: 900,
   wallInset: 18,
   ballRadius: 8,
-  gravity: 520,
-  maxSpeed: 900,
+  gravity: 360,
+  maxSpeed: 1100,
   paddle: {
     length: 90,
     thickness: 14,
@@ -17,19 +17,20 @@ export const CONFIG = {
     rightUp: Math.PI + 0.45,
   },
   bumpers: [
-    { id: "b1", x: 180, y: 220, radius: 24, score: 120 },
-    { id: "b2", x: 420, y: 220, radius: 24, score: 120 },
-    { id: "b3", x: 300, y: 320, radius: 26, score: 180 },
+    { id: "b1", x: 130, y: 160, radius: 22, score: 140 },
+    { id: "b2", x: 250, y: 220, radius: 24, score: 120 },
+    { id: "b3", x: 350, y: 220, radius: 24, score: 120 },
+    { id: "b4", x: 300, y: 280, radius: 26, score: 160 },
   ],
   valves: [
-    { id: "v1", x: 140, y: 520, radius: 12, score: 80 },
-    { id: "v2", x: 300, y: 470, radius: 12, score: 80 },
-    { id: "v3", x: 460, y: 520, radius: 12, score: 80 },
+    { id: "v1", x: 450, y: 420, radius: 12, score: 90 },
+    { id: "v2", x: 470, y: 470, radius: 12, score: 90 },
+    { id: "v3", x: 430, y: 520, radius: 12, score: 90 },
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
-  launchSpeed: -520,
-  launchSideKick: 90,
+  launchSpeed: -620,
+  launchSideKick: 110,
   drainY: 880,
   lives: 3,
 };
@@ -195,10 +196,10 @@ const resolvePaddleCollision = (state, isLeft, active) => {
   const approach = ball.vx * normal.x + ball.vy * normal.y;
   if (approach >= 0) return false;
 
-  const boost = active ? 1.15 : 1.02;
+  const boost = active ? 1.22 : 1.06;
   const reflected = reflectVelocity(ball.vx, ball.vy, normal.x, normal.y, boost);
   ball.vx = reflected.x;
-  ball.vy = reflected.y - (active ? 120 : 30);
+  ball.vy = reflected.y - (active ? 140 : 50);
 
   ball.x = closest.x + normal.x * (thickness + 0.5);
   ball.y = closest.y + normal.y * (thickness + 0.5);
@@ -227,7 +228,7 @@ const advanceBall = (state, dt) => {
 
 const handleBumpers = (state) => {
   state.bumpers.forEach((bumper) => {
-    if (resolveCircleCollision(state, bumper, 1.1)) {
+    if (resolveCircleCollision(state, bumper, 1.2)) {
       addScore(state, bumper.score);
     }
   });
@@ -236,7 +237,7 @@ const handleBumpers = (state) => {
 const handleValves = (state) => {
   state.valves.forEach((valve) => {
     if (valve.lit) return;
-    if (resolveCircleCollision(state, valve, 1.03)) {
+    if (resolveCircleCollision(state, valve, 1.08)) {
       valve.lit = true;
       addScore(state, valve.score);
     }

@@ -74,20 +74,59 @@ const drawBackground = () => {
   ctx.strokeStyle = "#223039";
   ctx.lineWidth = 10;
   ctx.beginPath();
-  ctx.moveTo(90, 80);
-  ctx.lineTo(510, 80);
-  ctx.moveTo(90, 620);
-  ctx.lineTo(510, 620);
+  ctx.moveTo(90, 84);
+  ctx.lineTo(510, 84);
+  ctx.moveTo(90, 640);
+  ctx.lineTo(510, 640);
   ctx.stroke();
 
   ctx.strokeStyle = "#31434f";
   ctx.lineWidth = 8;
   ctx.beginPath();
   ctx.moveTo(140, 120);
-  ctx.lineTo(140, 580);
+  ctx.lineTo(140, 600);
   ctx.moveTo(460, 120);
-  ctx.lineTo(460, 580);
+  ctx.lineTo(460, 600);
   ctx.stroke();
+
+  ctx.fillStyle = "#1e2b33";
+  ctx.fillRect(470, 80, 70, 620);
+
+  ctx.strokeStyle = "#394b57";
+  ctx.lineWidth = 4;
+  ctx.strokeRect(470, 80, 70, 620);
+
+  ctx.fillStyle = "#23323a";
+  ctx.fillRect(100, 40, 120, 50);
+  ctx.fillRect(240, 40, 120, 50);
+  ctx.fillRect(380, 40, 120, 50);
+
+  ctx.strokeStyle = "#526471";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(100, 40, 120, 50);
+  ctx.strokeRect(240, 40, 120, 50);
+  ctx.strokeRect(380, 40, 120, 50);
+
+  ctx.strokeStyle = "#2a3943";
+  ctx.lineWidth = 12;
+  ctx.beginPath();
+  ctx.moveTo(470, 660);
+  ctx.lineTo(520, 520);
+  ctx.lineTo(520, 180);
+  ctx.stroke();
+
+  ctx.strokeStyle = "#3a4b58";
+  ctx.lineWidth = 8;
+  ctx.beginPath();
+  ctx.moveTo(120, 150);
+  ctx.quadraticCurveTo(80, 240, 140, 300);
+  ctx.stroke();
+
+  ctx.fillStyle = "#2a3b44";
+  ctx.fillRect(420, 380, 90, 170);
+  ctx.strokeStyle = "#526471";
+  ctx.lineWidth = 3;
+  ctx.strokeRect(420, 380, 90, 170);
 };
 
 const drawBumpers = () => {
