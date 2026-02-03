@@ -21,21 +21,21 @@ export const CONFIG = {
     { id: "g2", x1: 520, y1: 640, x2: 420, y2: 860, thickness: 12 },
   ],
   bumpers: [
-    { id: "b1", x: 170, y: 170, radius: 22, score: 140 },
-    { id: "b2", x: 300, y: 200, radius: 24, score: 120 },
-    { id: "b3", x: 410, y: 180, radius: 22, score: 120 },
-    { id: "b4", x: 260, y: 300, radius: 26, score: 160 },
-    { id: "b5", x: 380, y: 320, radius: 24, score: 140 },
+    { id: "b1", x: 300, y: 330, radius: 26, score: 160 },
+    { id: "b2", x: 225, y: 410, radius: 24, score: 140 },
+    { id: "b3", x: 375, y: 410, radius: 24, score: 140 },
   ],
   valves: [
-    { id: "v1", x: 450, y: 420, radius: 12, score: 90 },
-    { id: "v2", x: 470, y: 470, radius: 12, score: 90 },
-    { id: "v3", x: 430, y: 520, radius: 12, score: 90 },
+    { id: "v1", x: 260, y: 300, radius: 10, score: 80 },
+    { id: "v2", x: 340, y: 300, radius: 10, score: 80 },
+    { id: "v3", x: 240, y: 470, radius: 10, score: 80 },
+    { id: "v4", x: 360, y: 470, radius: 10, score: 80 },
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
-  launchSpeed: -620,
-  launchSideKick: 110,
+  launchSpeed: -650,
+  launchSideKick: 45,
+  launchPosition: { x: 545, y: 850 },
   drainY: 880,
   lives: 3,
 };
@@ -65,8 +65,8 @@ export const createInitialState = () => {
     score: 0,
     lives: CONFIG.lives,
     ball: {
-      x: CONFIG.width - CONFIG.wallInset - 40,
-      y: CONFIG.drainY - 20,
+      x: CONFIG.launchPosition.x,
+      y: CONFIG.launchPosition.y,
       vx: 0,
       vy: 0,
     },
@@ -317,8 +317,8 @@ const handleDrain = (state) => {
 };
 
 const resetBall = (state) => {
-  state.ball.x = CONFIG.width - CONFIG.wallInset - 40;
-  state.ball.y = CONFIG.drainY - 20;
+  state.ball.x = CONFIG.launchPosition.x;
+  state.ball.y = CONFIG.launchPosition.y;
   state.ball.vx = 0;
   state.ball.vy = 0;
 };
