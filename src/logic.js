@@ -21,15 +21,26 @@ export const CONFIG = {
     { id: "g2", x1: 520, y1: 640, x2: 420, y2: 860, thickness: 12 },
   ],
   bumpers: [
-    { id: "b1", x: 300, y: 330, radius: 26, score: 160 },
-    { id: "b2", x: 225, y: 410, radius: 24, score: 140 },
-    { id: "b3", x: 375, y: 410, radius: 24, score: 140 },
+    { id: "b1", x: 300, y: 370, radius: 26, score: 180 },
+    { id: "b2", x: 235, y: 445, radius: 24, score: 150 },
+    { id: "b3", x: 365, y: 445, radius: 24, score: 150 },
   ],
   valves: [
-    { id: "v1", x: 260, y: 300, radius: 10, score: 80 },
-    { id: "v2", x: 340, y: 300, radius: 10, score: 80 },
-    { id: "v3", x: 240, y: 470, radius: 10, score: 80 },
-    { id: "v4", x: 360, y: 470, radius: 10, score: 80 },
+    { id: "v1", x: 255, y: 320, radius: 10, score: 90 },
+    { id: "v2", x: 345, y: 320, radius: 10, score: 90 },
+    { id: "v3", x: 205, y: 410, radius: 10, score: 90 },
+    { id: "v4", x: 395, y: 410, radius: 10, score: 90 },
+    { id: "v5", x: 280, y: 385, radius: 10, score: 90 },
+    { id: "v6", x: 320, y: 385, radius: 10, score: 90 },
+  ],
+  targets: [
+    { id: "t1", x: 300, y: 500, radius: 18, score: 110 },
+    { id: "t2", x: 230, y: 590, radius: 18, score: 110 },
+    { id: "t3", x: 370, y: 590, radius: 18, score: 110 },
+  ],
+  ports: [
+    { id: "p1", x: 250, y: 660, radius: 12, score: 70 },
+    { id: "p2", x: 350, y: 660, radius: 12, score: 70 },
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
@@ -76,6 +87,8 @@ export const createInitialState = () => {
     },
     bumpers: CONFIG.bumpers.map((b) => ({ ...b })),
     valves: CONFIG.valves.map((v) => ({ ...v, lit: false })),
+    targets: CONFIG.targets.map((t) => ({ ...t, cooldown: 0 })),
+    ports: CONFIG.ports.map((p) => ({ ...p, cooldown: 0 })),
     bonus: {
       active: false,
       timer: 0,
@@ -95,6 +108,8 @@ const cloneState = (state) => ({
   },
   bumpers: state.bumpers.map((b) => ({ ...b })),
   valves: state.valves.map((v) => ({ ...v })),
+  targets: state.targets.map((t) => ({ ...t })),
+  ports: state.ports.map((p) => ({ ...p })),
   bonus: { ...state.bonus },
 });
 
@@ -303,6 +318,28 @@ const updateBonus = (state, dt) => {
   });
 };
 
+const handleSensors = (state, sensors, dt, cooldownDuration) => {
+  const { ball } = state;
+  sensors.forEach((sensor) => {
+    sensor.cooldown = Math.max(0, sensor.cooldown - dt);
+    const dx = ball.x - sensor.x;
+    const dy = ball.y - sensor.y;
+    const distance = Math.hypot(dx, dy);
+    const minDistance = CONFIG.ballRadius + sensor.radius;
+
+    if (distance >= minDistance || distance === 0) return;
+
+    if (sensor.cooldown <= 0) {
+      addScore(state, sensor.score);
+      sensor.cooldown = cooldownDuration;
+    }
+
+    const normal = normalize(dx, dy);
+    ball.x = sensor.x + normal.x * (minDistance + 0.5);
+    ball.y = sensor.y + normal.y * (minDistance + 0.5);
+  });
+};
+
 const handleDrain = (state) => {
   if (state.ball.y - CONFIG.ballRadius < CONFIG.drainY) return false;
 
@@ -350,6 +387,8 @@ export const stepState = (state, input, dt) => {
   resolvePaddleCollision(next, true, input.leftFlip);
   resolvePaddleCollision(next, false, input.rightFlip);
   resolveGuideCollisions(next);
+  handleSensors(next, next.targets, dt, 0.6);
+  handleSensors(next, next.ports, dt, 0.4);
   updateBonus(next, dt);
   handleDrain(next);
 
