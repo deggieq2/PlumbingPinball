@@ -20,39 +20,37 @@ export const CONFIG = {
   guides: [
     { id: "g1", x1: 110, y1: 610, x2: 175, y2: 770, thickness: 12 },
     { id: "g2", x1: 490, y1: 610, x2: 425, y2: 770, thickness: 12 },
-  ],
-  curves: [
-    { id: "c1", x: 520, y: 150, radius: 90, boost: 0.98 },
+    { id: "g3", x1: 540, y1: 120, x2: 470, y2: 210, thickness: 10 },
   ],
   bumpers: [
-    { id: "b1", x: 300, y: 360, radius: 26, score: 180 },
-    { id: "b2", x: 235, y: 435, radius: 24, score: 150 },
-    { id: "b3", x: 365, y: 435, radius: 24, score: 150 },
+    { id: "b1", x: 300, y: 330, radius: 26, score: 180 },
+    { id: "b2", x: 235, y: 405, radius: 24, score: 150 },
+    { id: "b3", x: 365, y: 405, radius: 24, score: 150 },
   ],
   valves: [
-    { id: "v1", x: 265, y: 330, radius: 9, score: 90 },
-    { id: "v2", x: 335, y: 330, radius: 9, score: 90 },
-    { id: "v3", x: 185, y: 405, radius: 9, score: 90 },
-    { id: "v4", x: 415, y: 405, radius: 9, score: 90 },
-    { id: "v5", x: 300, y: 485, radius: 10, score: 110 },
-    { id: "v6", x: 300, y: 430, radius: 9, score: 90 },
+    { id: "v1", x: 265, y: 300, radius: 9, score: 90 },
+    { id: "v2", x: 335, y: 300, radius: 9, score: 90 },
+    { id: "v3", x: 185, y: 375, radius: 9, score: 90 },
+    { id: "v4", x: 415, y: 375, radius: 9, score: 90 },
+    { id: "v5", x: 300, y: 455, radius: 10, score: 110 },
+    { id: "v6", x: 300, y: 400, radius: 9, score: 90 },
   ],
   targets: [
-    { id: "t1", x: 300, y: 525, radius: 20, score: 140 },
-    { id: "t2", x: 230, y: 630, radius: 18, score: 120 },
-    { id: "t3", x: 370, y: 630, radius: 18, score: 120 },
+    { id: "t1", x: 300, y: 500, radius: 20, score: 140 },
+    { id: "t2", x: 230, y: 610, radius: 18, score: 120 },
+    { id: "t3", x: 370, y: 610, radius: 18, score: 120 },
   ],
   ports: [
-    { id: "p1", x: 270, y: 560, radius: 12, score: 80 },
-    { id: "p2", x: 330, y: 560, radius: 12, score: 80 },
-    { id: "p3", x: 210, y: 550, radius: 12, score: 80 },
-    { id: "p4", x: 390, y: 550, radius: 12, score: 80 },
+    { id: "p1", x: 270, y: 535, radius: 12, score: 80 },
+    { id: "p2", x: 330, y: 535, radius: 12, score: 80 },
+    { id: "p3", x: 210, y: 520, radius: 12, score: 80 },
+    { id: "p4", x: 390, y: 520, radius: 12, score: 80 },
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
-  launchSpeed: -820,
-  launchSideKick: 20,
-  launchPosition: { x: 545, y: 850 },
+  launchSpeed: -920,
+  launchSideKick: 60,
+  launchPosition: { x: 548, y: 850 },
   drainY: 880,
   lives: 3,
   tauntDuration: 3,
@@ -275,12 +273,6 @@ const resolveGuideCollisions = (state) => {
   });
 };
 
-const handleCurves = (state) => {
-  CONFIG.curves.forEach((curve) => {
-    resolveCircleCollision(state, curve, curve.boost);
-  });
-};
-
 const updatePaddles = (state, input, dt) => {
   const speed = CONFIG.paddle.speed;
   const left = state.paddles.left;
@@ -411,7 +403,6 @@ export const stepState = (state, input, dt) => {
 
   advanceBall(next, dt);
   resolveWallCollisions(next);
-  handleCurves(next);
   handleBumpers(next);
   handleValves(next);
   resolvePaddleCollision(next, true, input.leftFlip);
