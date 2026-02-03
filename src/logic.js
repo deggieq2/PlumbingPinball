@@ -22,35 +22,46 @@ export const CONFIG = {
     { id: "g2", x1: 490, y1: 610, x2: 425, y2: 770, thickness: 12 },
     { id: "g3", x1: 540, y1: 120, x2: 470, y2: 210, thickness: 10 },
   ],
+  curves: [
+    {
+      id: "c1",
+      cx: 560,
+      cy: 140,
+      radius: 90,
+      startAngle: Math.PI / 2,
+      endAngle: Math.PI,
+      boost: 1.02,
+    },
+  ],
   bumpers: [
-    { id: "b1", x: 300, y: 330, radius: 26, score: 180 },
-    { id: "b2", x: 235, y: 405, radius: 24, score: 150 },
-    { id: "b3", x: 365, y: 405, radius: 24, score: 150 },
+    { id: "b1", x: 300, y: 310, radius: 26, score: 180 },
+    { id: "b2", x: 235, y: 385, radius: 24, score: 150 },
+    { id: "b3", x: 365, y: 385, radius: 24, score: 150 },
   ],
   valves: [
-    { id: "v1", x: 265, y: 300, radius: 9, score: 90 },
-    { id: "v2", x: 335, y: 300, radius: 9, score: 90 },
-    { id: "v3", x: 185, y: 375, radius: 9, score: 90 },
-    { id: "v4", x: 415, y: 375, radius: 9, score: 90 },
-    { id: "v5", x: 300, y: 455, radius: 10, score: 110 },
-    { id: "v6", x: 300, y: 400, radius: 9, score: 90 },
+    { id: "v1", x: 265, y: 275, radius: 9, score: 90 },
+    { id: "v2", x: 335, y: 275, radius: 9, score: 90 },
+    { id: "v3", x: 185, y: 350, radius: 9, score: 90 },
+    { id: "v4", x: 415, y: 350, radius: 9, score: 90 },
+    { id: "v5", x: 300, y: 435, radius: 10, score: 110 },
+    { id: "v6", x: 300, y: 380, radius: 9, score: 90 },
   ],
   targets: [
-    { id: "t1", x: 300, y: 500, radius: 20, score: 140 },
-    { id: "t2", x: 230, y: 610, radius: 18, score: 120 },
-    { id: "t3", x: 370, y: 610, radius: 18, score: 120 },
+    { id: "t1", x: 300, y: 485, radius: 20, score: 140 },
+    { id: "t2", x: 230, y: 595, radius: 18, score: 120 },
+    { id: "t3", x: 370, y: 595, radius: 18, score: 120 },
   ],
   ports: [
-    { id: "p1", x: 270, y: 535, radius: 12, score: 80 },
-    { id: "p2", x: 330, y: 535, radius: 12, score: 80 },
-    { id: "p3", x: 210, y: 520, radius: 12, score: 80 },
-    { id: "p4", x: 390, y: 520, radius: 12, score: 80 },
+    { id: "p1", x: 270, y: 520, radius: 12, score: 80 },
+    { id: "p2", x: 330, y: 520, radius: 12, score: 80 },
+    { id: "p3", x: 210, y: 505, radius: 12, score: 80 },
+    { id: "p4", x: 390, y: 505, radius: 12, score: 80 },
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
-  launchSpeed: -920,
-  launchSideKick: 60,
-  launchPosition: { x: 548, y: 850 },
+  launchSpeed: -1020,
+  launchSideKick: 12,
+  launchPosition: { x: 552, y: 850 },
   drainY: 880,
   lives: 3,
   tauntDuration: 3,
@@ -273,6 +284,46 @@ const resolveGuideCollisions = (state) => {
   });
 };
 
+const angleBetween = (angle, start, end) => {
+  const normalized = (value) => (value + Math.PI * 2) % (Math.PI * 2);
+  const a = normalized(angle);
+  const s = normalized(start);
+  const e = normalized(end);
+  if (s <= e) return a >= s && a <= e;
+  return a >= s || a <= e;
+};
+
+const resolveArcCollision = (state, arc) => {
+  const { ball } = state;
+  const dx = ball.x - arc.cx;
+  const dy = ball.y - arc.cy;
+  const distance = Math.hypot(dx, dy);
+  const minDistance = CONFIG.ballRadius + arc.radius;
+
+  if (distance >= minDistance || distance === 0) return false;
+
+  const angle = Math.atan2(dy, dx);
+  if (!angleBetween(angle, arc.startAngle, arc.endAngle)) return false;
+
+  const normal = normalize(dx, dy);
+  const approach = ball.vx * normal.x + ball.vy * normal.y;
+  if (approach >= 0) return false;
+
+  const reflected = reflectVelocity(ball.vx, ball.vy, normal.x, normal.y, arc.boost ?? 1);
+  ball.vx = reflected.x;
+  ball.vy = reflected.y;
+
+  ball.x = arc.cx + normal.x * (minDistance + 0.5);
+  ball.y = arc.cy + normal.y * (minDistance + 0.5);
+  return true;
+};
+
+const handleCurves = (state) => {
+  CONFIG.curves.forEach((curve) => {
+    resolveArcCollision(state, curve);
+  });
+};
+
 const updatePaddles = (state, input, dt) => {
   const speed = CONFIG.paddle.speed;
   const left = state.paddles.left;
@@ -403,6 +454,7 @@ export const stepState = (state, input, dt) => {
 
   advanceBall(next, dt);
   resolveWallCollisions(next);
+  handleCurves(next);
   handleBumpers(next);
   handleValves(next);
   resolvePaddleCollision(next, true, input.leftFlip);

@@ -155,6 +155,16 @@ const drawWallOverlay = () => {
     ctx.stroke();
   });
 
+  if (CONFIG.curves) {
+    ctx.strokeStyle = "rgba(255, 208, 122, 0.5)";
+    ctx.lineWidth = 6;
+    CONFIG.curves.forEach((curve) => {
+      ctx.beginPath();
+      ctx.arc(curve.cx, curve.cy, curve.radius, curve.startAngle, curve.endAngle);
+      ctx.stroke();
+    });
+  }
+
   ctx.restore();
 };
 
