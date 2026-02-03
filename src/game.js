@@ -93,6 +93,34 @@ const drawBackground = () => {
   ctx.fillRect(0, 0, CONFIG.width, CONFIG.height);
 };
 
+const drawWallOverlay = () => {
+  ctx.save();
+  ctx.strokeStyle = "rgba(246, 241, 213, 0.35)";
+  ctx.lineWidth = 3;
+  ctx.setLineDash([10, 8]);
+
+  const inset = CONFIG.wallInset;
+  ctx.strokeRect(inset, inset, CONFIG.width - inset * 2, CONFIG.height - inset * 2);
+
+  ctx.setLineDash([6, 8]);
+  ctx.beginPath();
+  ctx.moveTo(inset, CONFIG.drainY);
+  ctx.lineTo(CONFIG.width - inset, CONFIG.drainY);
+  ctx.stroke();
+
+  ctx.setLineDash([]);
+  ctx.strokeStyle = "rgba(126, 228, 255, 0.45)";
+  ctx.lineWidth = 6;
+  CONFIG.guides.forEach((guide) => {
+    ctx.beginPath();
+    ctx.moveTo(guide.x1, guide.y1);
+    ctx.lineTo(guide.x2, guide.y2);
+    ctx.stroke();
+  });
+
+  ctx.restore();
+};
+
 const drawBumpers = () => {
   state.bumpers.forEach((bumper) => {
     ctx.fillStyle = "#cc5c3c";
@@ -246,6 +274,7 @@ const drawBanner = (title, subtitle) => {
 
 const render = () => {
   drawBackground();
+  drawWallOverlay();
   drawBumpers();
   drawValves();
   drawPaddles();

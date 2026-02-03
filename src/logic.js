@@ -50,7 +50,7 @@ export const CONFIG = {
   launchPosition: { x: 545, y: 850 },
   drainY: 880,
   lives: 3,
-  tauntDuration: 1.6,
+  tauntDuration: 3,
 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
