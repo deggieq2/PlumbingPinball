@@ -1,0 +1,24 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Pinball - Plumbing Works</title>
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <main class="game-shell">
+      <header class="hud">
+        <div class="hud-item">Score: <span id="score">0</span></div>
+        <div class="hud-item">Lives: <span id="lives">3</span></div>
+        <div class="hud-item">Bonus: <span id="bonus">OFF</span></div>
+      </header>
+      <canvas id="pinball" width="600" height="900" aria-label="Pinball playfield"></canvas>
+      <section class="controls">
+        <div>Controls: Left/Right or A/D to flip, Up/W or Space to launch.</div>
+        <div>P to pause, R to restart.</div>
+      </section>
+    </main>
+    <script type="module" src="./src/game.js"></script>
+  </body>
+</html>
