@@ -17,6 +17,13 @@ backgroundImage.onload = () => {
 };
 backgroundImage.src = "./assets/image.png";
 
+const daveImage = new Image();
+let daveReady = false;
+daveImage.onload = () => {
+  daveReady = true;
+};
+daveImage.src = "./assets/dave.png";
+
 const input = {
   leftFlip: false,
   rightFlip: false,
@@ -183,6 +190,42 @@ const drawOverlay = () => {
   }
 };
 
+const drawTaunt = () => {
+  if (!state.taunt.active) return;
+
+  const alpha = Math.min(state.taunt.timer / CONFIG.tauntDuration, 1);
+  const boxWidth = 320;
+  const boxHeight = 130;
+  const boxX = (CONFIG.width - boxWidth) / 2;
+  const boxY = 120;
+
+  ctx.save();
+  ctx.globalAlpha = 0.9 * alpha;
+  ctx.fillStyle = "rgba(10, 14, 18, 0.85)";
+  ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+  ctx.strokeStyle = "#f6f1d5";
+  ctx.lineWidth = 2;
+  ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+
+  if (daveReady) {
+    ctx.drawImage(daveImage, boxX + 14, boxY + 14, 88, 102);
+  } else {
+    ctx.fillStyle = "#23323a";
+    ctx.fillRect(boxX + 14, boxY + 14, 88, 102);
+  }
+
+  ctx.fillStyle = "#f6f1d5";
+  ctx.font = "18px 'IBM Plex Mono', monospace";
+  ctx.textAlign = "left";
+  ctx.fillText("DAVE:", boxX + 120, boxY + 44);
+
+  ctx.fillStyle = "#aebec8";
+  ctx.font = "14px 'IBM Plex Mono', monospace";
+  ctx.fillText("Nice try! Ha!", boxX + 120, boxY + 72);
+  ctx.fillText("Drop another one.", boxX + 120, boxY + 96);
+  ctx.restore();
+};
+
 const drawBanner = (title, subtitle) => {
   ctx.fillStyle = "rgba(12, 18, 22, 0.8)";
   ctx.fillRect(60, 360, 480, 140);
@@ -208,6 +251,7 @@ const render = () => {
   drawPaddles();
   drawBall();
   drawOverlay();
+  drawTaunt();
 
   scoreEl.textContent = state.score.toString();
   livesEl.textContent = state.lives.toString();

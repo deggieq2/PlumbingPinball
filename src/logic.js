@@ -49,6 +49,7 @@ export const CONFIG = {
   launchPosition: { x: 545, y: 850 },
   drainY: 880,
   lives: 3,
+  tauntDuration: 1.6,
 };
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value));
@@ -89,6 +90,10 @@ export const createInitialState = () => {
     valves: CONFIG.valves.map((v) => ({ ...v, lit: false })),
     targets: CONFIG.targets.map((t) => ({ ...t, cooldown: 0 })),
     ports: CONFIG.ports.map((p) => ({ ...p, cooldown: 0 })),
+    taunt: {
+      active: false,
+      timer: 0,
+    },
     bonus: {
       active: false,
       timer: 0,
@@ -110,6 +115,7 @@ const cloneState = (state) => ({
   valves: state.valves.map((v) => ({ ...v })),
   targets: state.targets.map((t) => ({ ...t })),
   ports: state.ports.map((p) => ({ ...p })),
+  taunt: { ...state.taunt },
   bonus: { ...state.bonus },
 });
 
@@ -318,6 +324,14 @@ const updateBonus = (state, dt) => {
   });
 };
 
+const updateTaunt = (state, dt) => {
+  if (!state.taunt.active) return;
+  state.taunt.timer -= dt;
+  if (state.taunt.timer > 0) return;
+  state.taunt.active = false;
+  state.taunt.timer = 0;
+};
+
 const handleSensors = (state, sensors, dt, cooldownDuration) => {
   const { ball } = state;
   sensors.forEach((sensor) => {
@@ -344,6 +358,8 @@ const handleDrain = (state) => {
   if (state.ball.y - CONFIG.ballRadius < CONFIG.drainY) return false;
 
   state.lives -= 1;
+  state.taunt.active = true;
+  state.taunt.timer = CONFIG.tauntDuration;
   if (state.lives <= 0) {
     state.status = "gameover";
   } else {
@@ -369,9 +385,10 @@ const launchBall = (state) => {
 export const stepState = (state, input, dt) => {
   const next = cloneState(state);
 
-  if (next.status === "gameover") return next;
-
   updatePaddles(next, input, dt);
+  updateTaunt(next, dt);
+
+  if (next.status === "gameover") return next;
 
   if (next.status === "waiting") {
     if (input.launch) {
