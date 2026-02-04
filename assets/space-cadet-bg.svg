@@ -1,0 +1,92 @@
+<svg width="600" height="900" viewBox="0 0 600 900" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#08141e" />
+      <stop offset="100%" stop-color="#050a10" />
+    </linearGradient>
+    <linearGradient id="boardGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#0c2b3b" />
+      <stop offset="100%" stop-color="#0a1f2b" />
+    </linearGradient>
+    <radialGradient id="bumper" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#9fe6ff" stop-opacity="0.9" />
+      <stop offset="55%" stop-color="#2c8db2" stop-opacity="0.8" />
+      <stop offset="100%" stop-color="#0c1f2a" stop-opacity="1" />
+    </radialGradient>
+    <radialGradient id="saucer" cx="50%" cy="45%" r="60%">
+      <stop offset="0%" stop-color="#f7d98b" />
+      <stop offset="60%" stop-color="#bb7a2a" />
+      <stop offset="100%" stop-color="#3a1c08" />
+    </radialGradient>
+  </defs>
+
+  <rect width="600" height="900" fill="url(#bg)" />
+
+  <g opacity="0.65" fill="#9fc3ff">
+    <circle cx="90" cy="110" r="1.2" />
+    <circle cx="520" cy="80" r="1.4" />
+    <circle cx="410" cy="140" r="1" />
+    <circle cx="210" cy="70" r="1" />
+    <circle cx="140" cy="190" r="1.3" />
+    <circle cx="470" cy="230" r="1" />
+    <circle cx="70" cy="310" r="1.1" />
+    <circle cx="540" cy="340" r="1.2" />
+    <circle cx="120" cy="420" r="1" />
+    <circle cx="480" cy="470" r="1.2" />
+    <circle cx="80" cy="520" r="1" />
+    <circle cx="520" cy="560" r="1.1" />
+    <circle cx="150" cy="610" r="1.1" />
+    <circle cx="450" cy="650" r="1" />
+    <circle cx="90" cy="730" r="1.2" />
+    <circle cx="510" cy="760" r="1.1" />
+  </g>
+
+  <path d="M90 40 L510 40 L560 880 L40 880 Z" fill="url(#boardGrad)" stroke="#2a5368" stroke-width="4" />
+  <path d="M110 70 L490 70 L535 860 L65 860 Z" fill="none" stroke="#173746" stroke-width="12" />
+  <path d="M120 90 L480 90 L520 840 L80 840 Z" fill="none" stroke="#355f78" stroke-width="4" />
+
+  <rect x="485" y="140" width="45" height="640" rx="14" fill="#0b1d28" stroke="#2f5d72" stroke-width="3" />
+  <rect x="493" y="155" width="29" height="610" rx="10" fill="#0f2634" opacity="0.8" />
+
+  <path d="M420 110 A90 90 0 0 1 510 200" fill="none" stroke="#3f748c" stroke-width="10" />
+  <path d="M410 120 A80 80 0 0 1 490 200" fill="none" stroke="#1b3644" stroke-width="4" />
+
+  <circle cx="190" cy="200" r="30" fill="url(#saucer)" stroke="#f2d79a" stroke-width="4" />
+  <circle cx="190" cy="200" r="16" fill="#3a1c08" opacity="0.6" />
+
+  <g stroke="#ffc86b" stroke-width="5" fill="url(#bumper)">
+    <circle cx="300" cy="280" r="28" />
+    <circle cx="245" cy="340" r="24" />
+    <circle cx="355" cy="340" r="24" />
+    <circle cx="300" cy="395" r="22" />
+  </g>
+
+  <g fill="#7ee4ff" opacity="0.85">
+    <circle cx="300" cy="240" r="6" />
+    <circle cx="260" cy="300" r="6" />
+    <circle cx="340" cy="300" r="6" />
+    <circle cx="220" cy="360" r="6" />
+    <circle cx="380" cy="360" r="6" />
+    <circle cx="300" cy="430" r="7" />
+  </g>
+
+  <g fill="#d97a57" opacity="0.8">
+    <circle cx="300" cy="470" r="18" />
+    <circle cx="410" cy="215" r="16" />
+  </g>
+
+  <g fill="#365b6e" opacity="0.9">
+    <circle cx="270" cy="520" r="11" />
+    <circle cx="330" cy="520" r="11" />
+    <circle cx="230" cy="500" r="10" />
+    <circle cx="370" cy="500" r="10" />
+  </g>
+
+  <path d="M140 630 L210 820" stroke="#274758" stroke-width="12" stroke-linecap="round" />
+  <path d="M460 630 L390 820" stroke="#274758" stroke-width="12" stroke-linecap="round" />
+
+  <path d="M120 520 L170 600" stroke="#1a303c" stroke-width="8" stroke-linecap="round" />
+  <path d="M480 520 L430 600" stroke="#1a303c" stroke-width="8" stroke-linecap="round" />
+
+  <path d="M60 880 L540 880" stroke="#0a151c" stroke-width="18" />
+</svg>

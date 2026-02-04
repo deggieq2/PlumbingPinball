@@ -15,7 +15,7 @@ let backgroundReady = false;
 backgroundImage.onload = () => {
   backgroundReady = true;
 };
-backgroundImage.src = "./assets/image.png";
+backgroundImage.src = "./assets/space-cadet-bg.svg";
 
 const daveImage = new Image();
 let daveReady = false;
@@ -119,10 +119,6 @@ const drawBackground = () => {
     ctx.fillRect(0, 0, CONFIG.width, CONFIG.height);
   }
 
-  ctx.strokeStyle = "rgba(47, 64, 76, 0.9)";
-  ctx.lineWidth = 5;
-  ctx.strokeRect(24, 10, 552, CONFIG.height - 20);
-
   const vignette = ctx.createRadialGradient(300, 240, 120, 300, 460, 500);
   vignette.addColorStop(0, "rgba(0, 0, 0, 0)");
   vignette.addColorStop(1, "rgba(0, 0, 0, 0.35)");
@@ -136,13 +132,30 @@ const drawWallOverlay = () => {
   ctx.lineWidth = 3;
   ctx.setLineDash([10, 8]);
 
-  const inset = CONFIG.wallInset;
-  ctx.strokeRect(inset, inset, CONFIG.width - inset * 2, CONFIG.height - inset * 2);
+  const boardTopY = 40;
+  const boardBottomY = CONFIG.height - 20;
+  const boardTopWidth = 420;
+  const boardBottomWidth = 520;
+  const centerX = CONFIG.width / 2;
+  const halfTop = boardTopWidth / 2;
+  const halfBottom = boardBottomWidth / 2;
+  const leftTop = { x: centerX - halfTop, y: boardTopY };
+  const rightTop = { x: centerX + halfTop, y: boardTopY };
+  const rightBottom = { x: centerX + halfBottom, y: boardBottomY };
+  const leftBottom = { x: centerX - halfBottom, y: boardBottomY };
+
+  ctx.beginPath();
+  ctx.moveTo(leftTop.x, leftTop.y);
+  ctx.lineTo(rightTop.x, rightTop.y);
+  ctx.lineTo(rightBottom.x, rightBottom.y);
+  ctx.lineTo(leftBottom.x, leftBottom.y);
+  ctx.closePath();
+  ctx.stroke();
 
   ctx.setLineDash([6, 8]);
   ctx.beginPath();
-  ctx.moveTo(inset, CONFIG.drainY);
-  ctx.lineTo(CONFIG.width - inset, CONFIG.drainY);
+  ctx.moveTo(leftBottom.x + 20, CONFIG.drainY);
+  ctx.lineTo(rightBottom.x - 20, CONFIG.drainY);
   ctx.stroke();
 
   ctx.setLineDash([]);
