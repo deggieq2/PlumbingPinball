@@ -20,8 +20,9 @@ export const CONFIG = {
   guides: [
     { id: "g1", x1: 140, y1: 620, x2: 205, y2: 805, thickness: 12 },
     { id: "g2", x1: 460, y1: 620, x2: 395, y2: 805, thickness: 12 },
-    { id: "g3", x1: 520, y1: 140, x2: 520, y2: 760, thickness: 10 },
+    { id: "g3", x1: 520, y1: 260, x2: 520, y2: 760, thickness: 10 },
     { id: "g4", x1: 85, y1: 150, x2: 125, y2: 700, thickness: 10 },
+    { id: "g5", x1: 505, y1: 240, x2: 440, y2: 275, thickness: 12 },
   ],
   curves: [
     {
@@ -61,9 +62,9 @@ export const CONFIG = {
   ],
   bonusDuration: 10,
   bonusMultiplier: 2,
-  launchSpeed: -1020,
-  launchSideKick: 12,
-  launchPosition: { x: 552, y: 850 },
+  launchSpeed: -980,
+  launchSideKick: 70,
+  launchPosition: { x: 550, y: 846 },
   drainY: 880,
   lives: 3,
   tauntDuration: 3,
